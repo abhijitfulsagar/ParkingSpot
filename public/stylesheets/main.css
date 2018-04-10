@@ -1,0 +1,16 @@
+.thumbnail img{
+    width: 100%;
+}
+
+.thumbnail{
+    padding: 0px;
+}
+
+
+.thumbnail .caption-ful{
+    padding:9px;
+}
+
+.container header{
+    margin-top:80px;
+}

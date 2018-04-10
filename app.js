@@ -1,15 +1,32 @@
-var express          =require("express"),
-    app              =express(),
-    bodyParser       =require("body-parser"),
-    mongoose         =require("mongoose"),
-    Campground       =require("./models/campgrounds"),
-    Comment          =require("./models/comments"),
-    seedDB           =require("./seeds.js");
+var express                 =require("express"),
+    app                     =express(),
+    bodyParser              =require("body-parser"),
+    mongoose                =require("mongoose"),
+    passport                =require("passport"),
+    passportLocal           =require("passport-local"),
+    passportLocalMongoose   =require("passport-local-mongoose"),
+    User                    =require("./models/users"),
+    Campground              =require("./models/campgrounds"),
+    Comment                 =require("./models/comments"),
+    seedDB                  =require("./seeds.js");
     
+//PASSPORT CONFIGURATION
+app.use(require("express-session")({
+    secret:"I love dogs",
+    resave:false,
+    saveUninitialized:false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new passportLocal(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 mongoose.connect("mongodb://localhost/yamp_camp");
 app.set("view engine","ejs");
+app.use(express.static(__dirname+"/public"));
 app.use(bodyParser.urlencoded({extended:true}));
+
 
 //clears the database    
 seedDB();
@@ -99,8 +116,50 @@ app.post("/index/:id/comments",function(req,res){
                }
            });
        }
-   })
+   });
 });
+
+//========================
+//AUTH ROUTES
+//=======================
+
+//show register form
+app.get("/register",function(req, res) {
+    res.render("register");
+});
+
+
+//signup logic
+app.post("/register",function(req, res) {
+    User.register(new User({username:req.body.username}),req.body.password,function(err,user){
+        if(err){
+            console.log(err);
+            return res.render("register");
+        }
+        passport.authenticate("local")(req,res,function(){
+            res.redirect("/index");
+        });
+    });
+});
+ 
+//LOGIN routes
+app.get("/login",function(req, res) {
+    res.render("login");
+});
+
+app.post("/login",passport.authenticate("local",
+    {
+        successRedirect:"/index",
+        failureRedirect:"/login"
+    }),function(req, res) {
+});
+
+//LOGOUT route
+app.get("/logout" ,function(req, res) {
+    req.logout();
+    res.redirect("/index");
+});
+
 app.listen(process.env.PORT,process.env.IP,function(req,res){
     console.log("YelpMe App has started");
 });

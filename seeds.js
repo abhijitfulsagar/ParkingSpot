@@ -27,7 +27,7 @@ function seedDB(){
                     //adding comments to each campground
                     Comment.create(
                         {
-                            text:"This place is beatiful. Should always come to visit this place.",
+                            text:"This place is beautiful. Should always come to visit this place.",
                             author:"Abhijit Fulsagar"
                         } ,function(err,comment){
                             if(err){
