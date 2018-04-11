@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 
 //clears the database    
-seedDB();
+//seedDB();
 
 app.use(authenticationRoutes);
 app.use(campgroundRoutes);
