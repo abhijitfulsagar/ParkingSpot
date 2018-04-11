@@ -14,3 +14,7 @@
 .container header{
     margin-top:80px;
 }
+
+.register,.login,.newComment,.newCampground{
+    margin-top:80px;
+}

@@ -40,9 +40,14 @@
                 <a class="active item" href="/index">Home</a>
 
                 <div class="right menu">
-                    <a href="/login" class="item">Login</a>
-                    <a href="/register" class="item">Sign Up</a>
-                    <a href="/logout" class="item">Log out</a>    
+                   <% if(!currentUser){ %>
+                        <a href="/login" class="item">Login</a>
+                        <a href="/register" class="item">Sign Up</a>
+                    <% }else{ %>
+                        <span class="item">Signed In as <%=currentUser.username.charAt(0).toUpperCase()+currentUser.username.substring(1,currentUser.username.length)%></span>
+                        <a href="/logout" class="item">Log out</a>    
+                   <% } %>
+                    
                 </div>
             </div>    
         </div>

@@ -22,6 +22,12 @@ passport.use(new passportLocal(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+//this is a middleware which will run for every route. It passes the current user name and id
+app.use(function(req,res,next){
+    res.locals.currentUser=req.user;
+    next();
+});
+
 mongoose.connect("mongodb://localhost/yamp_camp");
 app.set("view engine","ejs");
 app.use(express.static(__dirname+"/public"));
@@ -43,7 +49,7 @@ app.get("/index",function(req, res) {
             console.log(err);
         }else{
             console.log("Successfully found the campgrounds!!!");
-            res.render("campgrounds/index",{data:results});
+            res.render("campgrounds/index",{data:results,currentUser:req.user});
         }
     });
 });
@@ -86,7 +92,7 @@ app.get("/index/:id",function(req, res) {
 //===========================
 //COMMENTS ROUTE
 //===========================
-app.get("/index/:id/comments/new",function(req, res) {
+app.get("/index/:id/comments/new",isLoggedIn,function(req, res) {
     Campground.findById(req.params.id,function(err,foundCampground){
         if(err){
             console.log(err);
@@ -96,7 +102,7 @@ app.get("/index/:id/comments/new",function(req, res) {
     });
 });
 
-app.post("/index/:id/comments",function(req,res){
+app.post("/index/:id/comments",isLoggedIn,function(req,res){
     //find the correct campground
    Campground.findById(req.params.id,function(err, foundCampground) {
        if(err){
@@ -159,6 +165,14 @@ app.get("/logout" ,function(req, res) {
     req.logout();
     res.redirect("/index");
 });
+
+function isLoggedIn(req,res,next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+};
+
 
 app.listen(process.env.PORT,process.env.IP,function(req,res){
     console.log("YelpMe App has started");

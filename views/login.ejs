@@ -1,7 +1,15 @@
-<h1>LOGIN PAGE</h1>
-
-<form action="/login" method="POST">
-    <input name="username" placeholder="username" type="text"></input>
-    <input name="password" placeholder="password" type="password"></input>
-    <button>Login</button>
-</form>
+<% include ./partials/header%>
+<div class="container">
+    <div class="login">
+         <h1>LOGIN PAGE</h1>
+    
+        <form action="/login" method="POST">
+        <input name="username" placeholder="username" type="text"></input>
+        <input name="password" placeholder="password" type="password"></input>
+        <button>Login</button>
+        </form>    
+    </div>
+    
+</div>
+    
+<% include ./partials/footer%>
