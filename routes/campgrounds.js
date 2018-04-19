@@ -66,7 +66,7 @@ router.get("/index/:id/edit",checkUserOwnership,function(req, res) {
 });
 
 //UPDATE CAMPGROUND
-router.put("/index/:id",function(req,res){
+router.put("/index/:id",checkUserOwnership,function(req,res){
     Campground.findByIdAndUpdate(req.params.id,req.body.data,function(err,updatedCampground){
          if(err){
              console.log("Something went wrong in updating!!!!!")
@@ -80,7 +80,7 @@ router.put("/index/:id",function(req,res){
 });
 
 //DELETE 
-router.delete("/index/:id",function(req,res){
+router.delete("/index/:id",checkUserOwnership,function(req,res){
     Campground.findByIdAndRemove(req.params.id,function(err){
         if(err){
             res.redirect("/index");
