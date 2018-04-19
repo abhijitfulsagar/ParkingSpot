@@ -18,3 +18,7 @@
 .register,.login,.newComment,.newCampground{
     margin-top:80px;
 }
+
+#deleteForm{
+    display: inline;
+}

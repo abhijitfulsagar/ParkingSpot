@@ -58,15 +58,11 @@ router.get("/index/:id",function(req, res) {
 });
 
 //EDIT CAMPGROUND
-router.get("/index/:id/edit",function(req, res) {
-    Campground.findById(req.params.id,function(err,foundCampground){
-       if(err){
-           res.redirect("/index");
-       } else{
-           res.render("campgrounds/edit",{campground:foundCampground});
-       }
-    });
-    
+router.get("/index/:id/edit",checkUserOwnership,function(req, res) {
+   
+        Campground.findById(req.params.id,function(err,foundCampground){
+            res.render("campgrounds/edit",{campground:foundCampground});
+        });    
 });
 
 //UPDATE CAMPGROUND
@@ -83,11 +79,43 @@ router.put("/index/:id",function(req,res){
     });
 });
 
+//DELETE 
+router.delete("/index/:id",function(req,res){
+    Campground.findByIdAndRemove(req.params.id,function(err){
+        if(err){
+            res.redirect("/index");
+        }else{
+            res.redirect("/index");
+        }
+    })
+});
+
 function isLoggedIn(req,res,next){
     if(req.isAuthenticated()){
         return next();
     }
     res.redirect("/login");
 };
+
+function checkUserOwnership(req,res,next){
+    //is user logged in
+    if(req.isAuthenticated()){
+        Campground.findById(req.params.id,function(err,foundCampground){
+           if(err){
+               res.redirect("/index");
+            } else{
+                 //does the user own the authorization
+                 if(foundCampground.author.id.equals(req.user._id)){
+                     next();
+                 }else{
+                     res.send("YOU DO NOT HAVE PERMISSION TO EDIT THE CAMPGROUND");
+                 }
+            }    
+        });    
+    }else{
+        res.redirect("back");
+    }
+}
+
 
 module.exports=router;
