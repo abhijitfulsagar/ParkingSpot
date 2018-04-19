@@ -21,6 +21,9 @@
                         </h4>
                         <h4><a href="/index"><%= campgroundId.name%></a></h4>
                          <p><%=campgroundId.description%></p>
+                         <div class="text-left">
+                            <a class="ui inverted purple button" href="/index/<%= campgroundId._id%>/edit">Edit description</a>
+                    </div>  
                     </div>
                 </div>
                 <div class="well">
@@ -32,7 +35,7 @@
                  <% campgroundId.comments.forEach(function(comment){ %>
                      <div class="row">
                          <div class="col-md-12">
-                                <strong><%= comment.author.username%></strong>
+                                <strong><%= comment.author%></strong>
                                 <p><span class="pull-right">10 days ago</span></p>
                                 <p><%= comment.text%></p>        
                          </div>

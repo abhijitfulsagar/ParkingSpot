@@ -4,6 +4,7 @@ var express                 =require("express"),
     mongoose                =require("mongoose"),
     passport                =require("passport"),
     passportLocal           =require("passport-local"),
+    methodOverride          =require("method-override"),
     passportLocalMongoose   =require("passport-local-mongoose"),
     User                    =require("./models/users"),
     Campground              =require("./models/campgrounds"),
@@ -36,7 +37,7 @@ mongoose.connect("mongodb://localhost/yamp_camp");
 app.set("view engine","ejs");
 app.use(express.static(__dirname+"/public"));
 app.use(bodyParser.urlencoded({extended:true}));
-
+app.use(methodOverride("_method"));
 
 //clears the database    
 //seedDB();
