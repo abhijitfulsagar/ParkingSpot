@@ -2,7 +2,13 @@
 
 var commentSchema=new mongoose.Schema({
     text:String,
-    author:String
+     author: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    }
 });
 
 //this name "Comment" is the name of model which is used as ref when declaring the schema for campgrounds in comments array
