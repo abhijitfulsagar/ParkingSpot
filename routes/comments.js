@@ -43,7 +43,7 @@ router.post("/index/:id/comments",isLoggedIn,function(req,res){
 });
 
 //EDIT COMMENT ROUTE
-router.get("/index/:id/comments/:commentId/edit",function(req,res){
+router.get("/index/:id/comments/:commentId/edit",checkCommentOwnership,function(req,res){
     Comment.findById(req.params.commentId,function(err, foundComment) {
         if(err){
           res.redirect("back");  
@@ -55,7 +55,7 @@ router.get("/index/:id/comments/:commentId/edit",function(req,res){
 });
 
 //UPDATE COMMENT
-router.put("/index/:id/comments/:commentId",function(req,res){
+router.put("/index/:id/comments/:commentId",checkCommentOwnership,function(req,res){
     Comment.findByIdAndUpdate(req.params.commentId,req.body.comment,function(err,foundComment){
         if(err){
             res.redirect("back");
@@ -66,7 +66,7 @@ router.put("/index/:id/comments/:commentId",function(req,res){
 });
 
 //DELETE ROUTE
-router.delete("/index/:id/comments/:commentId",function(req,res){
+router.delete("/index/:id/comments/:commentId",checkCommentOwnership,function(req,res){
     Comment.findByIdAndRemove(req.params.commentId,function(err){
         if(err){
             console.log(err);
@@ -84,5 +84,25 @@ function isLoggedIn(req,res,next){
     }
     res.redirect("/login");
 };
+
+function checkCommentOwnership(req,res,next){
+    //is user logged in
+    if(req.isAuthenticated()){
+        Comment.findById(req.params.commentId,function(err,foundComment){
+           if(err){
+               res.redirect("/index");
+            } else{
+                 //does the user own the authorization to edit comment
+                 if(foundComment.author.id.equals(req.user._id)){
+                     next();
+                 }else{
+                     res.send("YOU DO NOT HAVE PERMISSION TO EDIT THE COMMENT");
+                 }
+            }    
+        });    
+    }else{
+        res.redirect("back");
+    }
+}
 
 module.exports=router;
