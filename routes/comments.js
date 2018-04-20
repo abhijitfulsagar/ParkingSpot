@@ -8,7 +8,7 @@ router.get("/index/:id/comments/new",isLoggedIn,function(req, res) {
         if(err){
             console.log(err);
         }else{
-            res.render("comments/new",{campground:foundCampground});        
+            res.render("comments/new",{campground:foundCampground,username:req.user.username});        
         }
     });
 });
@@ -35,6 +35,30 @@ router.post("/index/:id/comments",isLoggedIn,function(req,res){
        }
    });
 });
+
+//EDIT COMMENT ROUTE
+router.get("/index/:id/comments/:commentId/edit",function(req,res){
+    Comment.findById(req.params.commentId,function(err, foundComment) {
+        if(err){
+          res.redirect("back");  
+        }else{
+            res.render("comments/edit",{campgroundId:req.params.id,comment:foundComment});        
+        }
+    });
+    
+});
+
+//UPDATE COMMENT
+router.put("/index/:id/comments/:commentId",function(req,res){
+    Comment.findByIdAndUpdate(req.params.commentId,req.body.comment,function(err,foundComment){
+        if(err){
+            res.redirect("back");
+        }else{
+            res.redirect("/index/"+req.params.id);
+        }
+    });
+});
+
 
 function isLoggedIn(req,res,next){
     if(req.isAuthenticated()){
