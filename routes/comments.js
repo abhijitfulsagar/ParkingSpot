@@ -24,6 +24,7 @@ router.post("/index/:id/comments",middleware.isLoggedIn,function(req,res){
            //create a comment
            Comment.create(req.body.comment,function(err,comment){
                if(err){
+                   req.flash("error","Something went wrong");
                    console.log(err);
                }else{
                     //add username and id to comment
@@ -36,6 +37,7 @@ router.post("/index/:id/comments",middleware.isLoggedIn,function(req,res){
                    foundCampground.comments.push(comment);
                    foundCampground.save();
                    //final step is to redirect
+                   req.flash("success","Successfully added comment");
                    res.redirect("/index/"+foundCampground._id);
                }
            });
@@ -61,6 +63,7 @@ router.put("/index/:id/comments/:commentId",middleware.checkCommentOwnership,fun
         if(err){
             res.redirect("back");
         }else{
+            req.flash("success","Successfully updated the comment!!!");
             res.redirect("/index/"+req.params.id);
         }
     });
@@ -73,6 +76,7 @@ router.delete("/index/:id/comments/:commentId",middleware.checkCommentOwnership,
             console.log(err);
             res.redirect("/index/"+req.params.id);
         }else{
+            req.flash("success","Successfully deleted the comment!!!");
             res.redirect("/index/"+req.params.id);
         }
     });

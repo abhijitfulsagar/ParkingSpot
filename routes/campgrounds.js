@@ -34,7 +34,7 @@ router.post("/index",middleware.isLoggedIn,function(req,res){
         if(err){
             console.log(err);
         }else{
-          
+            req.flash("success","Successfully added a campground to database!!!");
             res.redirect("/index");
         }
     });
@@ -70,12 +70,13 @@ router.get("/index/:id/edit",middleware.checkUserOwnership,function(req, res) {
 router.put("/index/:id",middleware.checkUserOwnership,function(req,res){
     Campground.findByIdAndUpdate(req.params.id,req.body.data,function(err,updatedCampground){
          if(err){
-             console.log("Something went wrong in updating!!!!!");
+               console.log("Something went wrong in updating!!!!!");
+               req.flash("error","Something went wrong updating the campground!!!");
                res.redirect("/index");
             }else{
                 console.log("Successfully updated!!!!!!");
-                
-               res.redirect("/index/"+req.params.id);
+                req.flash("success","Successfully updated the campground!!!");
+                res.redirect("/index/"+req.params.id);
             } 
     });
 });
@@ -84,8 +85,10 @@ router.put("/index/:id",middleware.checkUserOwnership,function(req,res){
 router.delete("/index/:id",middleware.checkUserOwnership,function(req,res){
     Campground.findByIdAndRemove(req.params.id,function(err){
         if(err){
+            req.flash("error","Something went wrong deleting the campground!!!");
             res.redirect("/index");
         }else{
+            req.flash("success","Successfully deleted the campground!!!");
             res.redirect("/index");
         }
     });

@@ -14,9 +14,11 @@ router.post("/register",function(req, res) {
     User.register(new User({username:req.body.username}),req.body.password,function(err,user){
         if(err){
             console.log(err);
-            return res.render("register");
+            req.flash("error",err.message);
+            res.redirect("/register");
         }
         passport.authenticate("local")(req,res,function(){
+            req.flash("success","Welcome to YelpCamp "+ user.username);
             res.redirect("/index");
         });
     });
@@ -35,16 +37,11 @@ router.post("/login",passport.authenticate("local",
 });
 
 //LOGOUT route
-router.get("/logout" ,function(req, res) {
+router.get("/logout",function(req, res) {
     req.logout();
+    req.flash("success","Logged you out!!!");
     res.redirect("/index");
 });
 
-function isLoggedIn(req,res,next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-};
 
 module.exports=router;
