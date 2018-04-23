@@ -23,13 +23,14 @@ router.get("/index",function(req, res) {
 
 router.post("/index",middleware.isLoggedIn,function(req,res){
     var location=req.body.placeName;
+    var price=req.body.price;
     var imageURL=req.body.imgName;
     var desc=req.body.description;
     var author={
         id:req.user._id,
         username:req.user.username
     };
-    var object={name:location,image:imageURL,author:author,description:desc};
+    var object={name:location,price:price,image:imageURL,author:author,description:desc};
     Campground.create(object,function(err,results){
         if(err){
             console.log(err);
