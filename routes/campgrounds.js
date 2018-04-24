@@ -3,6 +3,16 @@ var Campground=require("../models/campgrounds");
 var middleware=require("../middleware/middleware");
 var router=express.Router();
 
+var NodeGeocoder = require('node-geocoder');
+ 
+var options = {
+  provider: 'google',
+  httpAdapter: 'https',
+  apiKey: process.env.GEOCODER_API_KEY,
+  formatter: null
+};
+ 
+var geocoder = NodeGeocoder(options);
 
 router.get("/",function(req, res) {
     res.render("landing");
@@ -20,26 +30,37 @@ router.get("/index",function(req, res) {
     });
 });
 
-
-router.post("/index",middleware.isLoggedIn,function(req,res){
-    var location=req.body.placeName;
-    var price=req.body.price;
-    var imageURL=req.body.imgName;
-    var desc=req.body.description;
-    var author={
-        id:req.user._id,
-        username:req.user.username
-    };
-    var object={name:location,price:price,image:imageURL,author:author,description:desc};
-    Campground.create(object,function(err,results){
+//CREATE - add new campground to DB
+router.post("/index", middleware.isLoggedIn, function(req, res){
+  // get data from form and add to campgrounds array
+  var name = req.body.placeName;
+  var image = req.body.imgName;
+  var price = req.body.price;
+  var desc = req.body.description;
+  var author = {
+      id: req.user._id,
+      username: req.user.username
+  }
+  geocoder.geocode(req.body.location, function (err, data) {
+    if (err || !data.length) {
+      req.flash('error', 'Invalid address');
+      return res.redirect('back');
+    }
+    var lat = data[0].latitude;
+    var lng = data[0].longitude;
+    var location = data[0].formattedAddress;
+    var newCampground = {name: name, image: image, price:price,description: desc, author:author, location: location, lat: lat, lng: lng};
+    // Create a new campground and save to DB
+    Campground.create(newCampground, function(err, newlyCreated){
         if(err){
             console.log(err);
-        }else{
-            req.flash("success","Successfully added a campground to database!!!");
+        } else {
+            //redirect back to campgrounds page
+            console.log(newlyCreated);
             res.redirect("/index");
         }
     });
-    
+  });
 });
 
 router.get("/index/new",middleware.isLoggedIn,function(req, res) {
@@ -67,19 +88,27 @@ router.get("/index/:id/edit",middleware.checkUserOwnership,function(req, res) {
         });    
 });
 
-//UPDATE CAMPGROUND
-router.put("/index/:id",middleware.checkUserOwnership,function(req,res){
-    Campground.findByIdAndUpdate(req.params.id,req.body.data,function(err,updatedCampground){
-         if(err){
-               console.log("Something went wrong in updating!!!!!");
-               req.flash("error","Something went wrong updating the campground!!!");
-               res.redirect("/index");
-            }else{
-                console.log("Successfully updated!!!!!!");
-                req.flash("success","Successfully updated the campground!!!");
-                res.redirect("/index/"+req.params.id);
-            } 
-    });
+// UPDATE CAMPGROUND ROUTE
+router.put("/index/:id", middleware.checkUserOwnership, function(req, res){
+  geocoder.geocode(req.body.data.location, function (err, data) {
+    if (err || !data.length) {
+      req.flash('error', 'Invalid address');
+      return res.redirect('back');
+    }else{
+        req.body.data.lat = data[0].latitude;
+        req.body.data.lng = data[0].longitude;
+        req.body.data.location = data[0].formattedAddress; 
+        Campground.findByIdAndUpdate(req.params.id, req.body.data, function(err, campground){
+            if(err){
+                req.flash("error", err.message);
+                res.redirect("back");
+            } else {
+                req.flash("success","Successfully Updated!");
+                res.redirect("/index/" + campground._id);
+            }
+        });
+    }
+  });
 });
 
 //DELETE 

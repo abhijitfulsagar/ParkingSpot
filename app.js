@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express                 =require("express"),
     app                     =express(),
     bodyParser              =require("body-parser"),
@@ -11,6 +12,7 @@ var express                 =require("express"),
     Campground              =require("./models/campgrounds"),
     Comment                 =require("./models/comments"),
     seedDB                  =require("./seeds.js");
+    
    
 var commentRoutes       =require("./routes/comments"),
     campgroundRoutes    =require("./routes/campgrounds"),

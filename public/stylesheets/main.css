@@ -23,3 +23,8 @@
     display: inline;
 }
 
+/* Google Maps */
+#map {
+    height: 400px;
+    width: 100%;
+}
