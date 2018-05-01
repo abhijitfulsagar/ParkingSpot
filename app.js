@@ -9,13 +9,13 @@ var express                 =require("express"),
     methodOverride          =require("method-override"),
     passportLocalMongoose   =require("passport-local-mongoose"),
     User                    =require("./models/users"),
-    Campground              =require("./models/campgrounds"),
+    Parking                 =require("./models/campgrounds"),
     Comment                 =require("./models/comments"),
     seedDB                  =require("./seeds.js");
     
    
 var commentRoutes       =require("./routes/comments"),
-    campgroundRoutes    =require("./routes/campgrounds"),
+    parkingRoutes    =require("./routes/campgrounds"),
     authenticationRoutes=require("./routes/authentication");
  
 //PASSPORT CONFIGURATION
@@ -50,9 +50,9 @@ app.use(function(req,res,next){
 //seedDB();
 
 app.use(authenticationRoutes);
-app.use(campgroundRoutes);
+app.use(parkingRoutes);
 app.use(commentRoutes);
 
 app.listen(process.env.PORT,process.env.IP,function(req,res){
-    console.log("YelpMe App has started");
+    console.log("ParkingSpot App has started");
 });

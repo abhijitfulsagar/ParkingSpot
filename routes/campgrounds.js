@@ -1,5 +1,5 @@
 var express=require("express");
-var Campground=require("../models/campgrounds");
+var Parking=require("../models/campgrounds");
 var middleware=require("../middleware/middleware");
 var router=express.Router();
 
@@ -19,12 +19,12 @@ router.get("/",function(req, res) {
 }); 
 
 router.get("/index",function(req, res) {
-    Campground.find({},function(err,results){
+    Parking.find({},function(err,results){
         if(err){
-            console.log("No such campgrounds exists");
+            console.log("No such parking spot exists");
             console.log(err);
         }else{
-            console.log("Successfully found the campgrounds!!!");
+            console.log("Successfully found all the parking spots!!!");
             res.render("campgrounds/index",{data:results});
         }
     });
@@ -40,7 +40,7 @@ router.post("/index", middleware.isLoggedIn, function(req, res){
   var author = {
       id: req.user._id,
       username: req.user.username
-  }
+  };
   geocoder.geocode(req.body.location, function (err, data) {
     if (err || !data.length) {
       req.flash('error', 'Invalid address');
@@ -49,9 +49,9 @@ router.post("/index", middleware.isLoggedIn, function(req, res){
     var lat = data[0].latitude;
     var lng = data[0].longitude;
     var location = data[0].formattedAddress;
-    var newCampground = {name: name, image: image, price:price,description: desc, author:author, location: location, lat: lat, lng: lng};
+    var newParkingSpot = {name: name, image: image, price:price,description: desc, author:author, location: location, lat: lat, lng: lng};
     // Create a new campground and save to DB
-    Campground.create(newCampground, function(err, newlyCreated){
+    Parking.create(newParkingSpot, function(err, newlyCreated){
         if(err){
             console.log(err);
         } else {
@@ -69,12 +69,12 @@ router.get("/index/new",middleware.isLoggedIn,function(req, res) {
 
 //SHOW route
 router.get("/index/:id",function(req, res) {
-    Campground.findById(req.params.id).populate("comments").exec(function(err,result){
+    Parking.findById(req.params.id).populate("comments").exec(function(err,result){
         if(err){
             console.log(err);
         }else{
-            console.log("Opened the required campground!!!");
-            res.render("campgrounds/show",{campgroundId:result});
+            console.log("Opened the required parking spot!!!");
+            res.render("campgrounds/show",{parking:result});
         } 
     });
    
@@ -83,8 +83,8 @@ router.get("/index/:id",function(req, res) {
 //EDIT CAMPGROUND
 router.get("/index/:id/edit",middleware.checkUserOwnership,function(req, res) {
    
-        Campground.findById(req.params.id,function(err,foundCampground){
-            res.render("campgrounds/edit",{campground:foundCampground});
+        Parking.findById(req.params.id,function(err,foundParkingSpot){
+            res.render("campgrounds/edit",{parking:foundParkingSpot});
         });    
 });
 
@@ -96,15 +96,15 @@ router.put("/index/:id", middleware.checkUserOwnership, function(req, res){
       return res.redirect('back');
     }else{
         req.body.data.lat = data[0].latitude;
-        req.body.data.lng = data[0].longitude;
+        req.body.data.lng = data[0].longitude; 
         req.body.data.location = data[0].formattedAddress; 
-        Campground.findByIdAndUpdate(req.params.id, req.body.data, function(err, campground){
+        Parking.findByIdAndUpdate(req.params.id, req.body.data, function(err, parking){
             if(err){
                 req.flash("error", err.message);
                 res.redirect("back");
             } else {
                 req.flash("success","Successfully Updated!");
-                res.redirect("/index/" + campground._id);
+                res.redirect("/index/" + parking._id);
             }
         });
     }
@@ -113,12 +113,12 @@ router.put("/index/:id", middleware.checkUserOwnership, function(req, res){
 
 //DELETE 
 router.delete("/index/:id",middleware.checkUserOwnership,function(req,res){
-    Campground.findByIdAndRemove(req.params.id,function(err){
+    Parking.findByIdAndRemove(req.params.id,function(err){
         if(err){
-            req.flash("error","Something went wrong deleting the campground!!!");
+            req.flash("error","Something went wrong deleting the parking spot!!!");
             res.redirect("/index");
         }else{
-            req.flash("success","Successfully deleted the campground!!!");
+            req.flash("success","Successfully deleted the parking spot!!!");
             res.redirect("/index");
         }
     });

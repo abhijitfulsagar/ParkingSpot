@@ -1,5 +1,5 @@
 var mongoose=require("mongoose");
-var Campground=require("./models/campgrounds");
+var Parking=require("./models/campgrounds");
 var Comment=require("./models/comments.js");
 
 var data=[
@@ -12,17 +12,17 @@ var data=[
 function seedDB(){
     
     //this will clear all the data from database and add new campgrounds to database
-    Campground.remove({},function(err){
+    Parking.remove({},function(err){
         if(err){
             console.log(err);
         }
          //add few campgrounds
         data.forEach(function(seed){
-             Campground.create(seed,function(err,campground){
+             Parking.create(seed,function(err,parkingSpot){
                 if(err){
                     console.log(err);
                 }else{
-                    console.log("Campground added");
+                    console.log("Parking spot added");
                     
                     //adding comments to each campground
                     Comment.create(
@@ -33,8 +33,8 @@ function seedDB(){
                             if(err){
                                 console.log(err);
                             }else{
-                                campground.comments.push(comment);
-                                campground.save();
+                                parkingSpot.comments.push(comment);
+                                parkingSpot.save();
                                 console.log("Comment added");
                             }
                     });

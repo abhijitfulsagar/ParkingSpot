@@ -24,4 +24,4 @@ var campSchema=new mongoose.Schema({
 });
 
 //DATA MODEL    
-module.exports=mongoose.model("Campground",campSchema);
+module.exports=mongoose.model("Parking",campSchema);

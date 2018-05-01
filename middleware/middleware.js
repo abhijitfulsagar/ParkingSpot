@@ -1,4 +1,4 @@
-var Campground      =require("../models/campgrounds");
+var Parking      =require("../models/campgrounds");
 var Comment         =require("../models/comments");
 var middlewareObject={}
 
@@ -27,13 +27,13 @@ middlewareObject.checkCommentOwnership=function (req,res,next){
 middlewareObject.checkUserOwnership=function(req,res,next){
     //is user logged in
     if(req.isAuthenticated()){
-        Campground.findById(req.params.id,function(err,foundCampground){
+        Parking.findById(req.params.id,function(err,foundParkingSpot){
            if(err){
-               req.flash("error","Campground not found");
+               req.flash("error","Parking spot not found");
                res.redirect("/index");
             } else{
                  //does the user own the authorization
-                 if(foundCampground.author.id.equals(req.user._id)){
+                 if(foundParkingSpot.author.id.equals(req.user._id)){
                      next();
                  }else{
                      req.flash("error","You do not have permission to do that ");

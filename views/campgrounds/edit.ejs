@@ -1,25 +1,25 @@
 <% include ../partials/header%>
 <div class="container">
-    <div class="newCampground">
+    <div class="newParkingSpot">
         <div class="row">
             <div style="width:30%;margin:25px auto;">
-                <h1>Edit <%= campground.name%></h1>
-                <form action="/index/<%= campground._id%>?_method=PUT" method="POST">
+                <h1>Edit <%= parking.name%></h1>
+                <form action="/index/<%= parking._id%>?_method=PUT" method="POST">
                     <div class="form-group">
-                         <input class="form-control" name="data[name]" value="<%= campground.name%>" type="text"></input>
+                         <input class="form-control" name="data[name]" value="<%= parking.name%>" type="text"></input>
                     </div>
                     <div class="form-group">
-                         <input class="form-control" name="data[image]" value="<%= campground.image%>" type="text"></input> 
+                         <input class="form-control" name="data[image]" value="<%= parking.image%>" type="text"></input> 
                     </div>
                     <div class="form-group">
-                         <input class="form-control" name="data[price]" value="<%= campground.price%>" type="number" min="5" step="0.1"></input>
+                         <input class="form-control" name="data[price]" value="<%= parking.price%>" type="number" min="5" step="0.1"></input>
                     </div>
                     <div class="form-group">
                         <label for="location">Location</label>
-                        <input class="form-control" type="text" name="data[location]" id="location" value="<%= campground.location %>">
+                        <input class="form-control" type="text" name="data[location]" id="location" value="<%= parking.location %>">
                     </div>
                      <div class="form-group">
-                         <input class="form-control" name="data[description]" value="<%= campground.description%>" type="text"></input> 
+                         <input class="form-control" name="data[description]" value="<%= parking.description%>" type="text"></input> 
                     </div>
                     <div class="form-group">
                         <button class="btn btn-lg  btn-block btn-primary">SUBMIT</button>

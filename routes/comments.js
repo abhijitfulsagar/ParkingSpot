@@ -1,22 +1,22 @@
 var express=require("express");
 var router=express.Router();
-var Campground=require("../models/campgrounds");
+var Parking=require("../models/campgrounds");
 var middleware=require("../middleware/middleware");
 var Comment=require("../models/comments");
 
 router.get("/index/:id/comments/new",middleware.isLoggedIn,function(req, res) {
-    Campground.findById(req.params.id,function(err,foundCampground){
+    Parking.findById(req.params.id,function(err,foundParkingSpot){
         if(err){
             console.log(err);
         }else{
-            res.render("comments/new",{campground:foundCampground,username:req.user.username});        
+            res.render("comments/new",{parking:foundParkingSpot,username:req.user.username});        
         }
     });
 });
 
 router.post("/index/:id/comments",middleware.isLoggedIn,function(req,res){
     //find the correct campground
-   Campground.findById(req.params.id,function(err, foundCampground) {
+   Parking.findById(req.params.id,function(err, foundParkingSpot) {
        if(err){
            console.log(err);
            res.redirect("/index");
@@ -34,11 +34,11 @@ router.post("/index/:id/comments",middleware.isLoggedIn,function(req,res){
                    //save comment
                     comment.save();
                    //adding the comment to comments array of that particular campground
-                   foundCampground.comments.push(comment);
-                   foundCampground.save();
+                   foundParkingSpot.comments.push(comment);
+                   foundParkingSpot.save();
                    //final step is to redirect
                    req.flash("success","Successfully added comment");
-                   res.redirect("/index/"+foundCampground._id);
+                   res.redirect("/index/"+foundParkingSpot._id);
                }
            });
        }
@@ -51,7 +51,7 @@ router.get("/index/:id/comments/:commentId/edit",middleware.checkCommentOwnershi
         if(err){
           res.redirect("back");  
         }else{
-            res.render("comments/edit",{campgroundId:req.params.id,comment:foundComment});        
+            res.render("comments/edit",{parkingID:req.params.id,comment:foundComment});        
         }
     });
     
