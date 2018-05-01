@@ -13,34 +13,34 @@ function seedDB(){
     
     //this will clear all the data from database and add new campgrounds to database
     Parking.remove({},function(err){
-        if(err){
-            console.log(err);
-        }
-         //add few campgrounds
-        data.forEach(function(seed){
-             Parking.create(seed,function(err,parkingSpot){
-                if(err){
-                    console.log(err);
-                }else{
-                    console.log("Parking spot added");
+        // if(err){
+        //     console.log(err);
+        // }
+        //  //add few campgrounds
+        // data.forEach(function(seed){
+        //      Parking.create(seed,function(err,parkingSpot){
+        //         if(err){
+        //             console.log(err);
+        //         }else{
+        //             console.log("Parking spot added");
                     
-                    //adding comments to each campground
-                    Comment.create(
-                        {
-                            text:"This place is beautiful. Should always come to visit this place.",
-                            author:"Abhijit Fulsagar"
-                        } ,function(err,comment){
-                            if(err){
-                                console.log(err);
-                            }else{
-                                parkingSpot.comments.push(comment);
-                                parkingSpot.save();
-                                console.log("Comment added");
-                            }
-                    });
-                }
-             });
-        });
+        //             //adding comments to each campground
+        //             Comment.create(
+        //                 {
+        //                     text:"This place is beautiful. Should always come to visit this place.",
+        //                     author:"Abhijit Fulsagar"
+        //                 } ,function(err,comment){
+        //                     if(err){
+        //                         console.log(err);
+        //                     }else{
+        //                         parkingSpot.comments.push(comment);
+        //                         parkingSpot.save();
+        //                         console.log("Comment added");
+        //                     }
+        //             });
+        //         }
+        //      });
+        // });
     });
     
     //add comments

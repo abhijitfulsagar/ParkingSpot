@@ -34,7 +34,9 @@ router.get("/index",function(req, res) {
 router.post("/index", middleware.isLoggedIn, function(req, res){
   // get data from form and add to campgrounds array
   var name = req.body.placeName;
-  var image = req.body.imgName;
+  var image1 = req.body.imgName1;
+  var image2 = req.body.imgName2;
+  var image3 = req.body.imgName3;
   var price = req.body.price;
   var desc = req.body.description;
   var author = {
@@ -49,7 +51,7 @@ router.post("/index", middleware.isLoggedIn, function(req, res){
     var lat = data[0].latitude;
     var lng = data[0].longitude;
     var location = data[0].formattedAddress;
-    var newParkingSpot = {name: name, image: image, price:price,description: desc, author:author, location: location, lat: lat, lng: lng};
+    var newParkingSpot = {name: name, image1: image1,image2:image2,image3:image3, price:price,description: desc, author:author, location: location, lat: lat, lng: lng};
     // Create a new campground and save to DB
     Parking.create(newParkingSpot, function(err, newlyCreated){
         if(err){

@@ -47,7 +47,7 @@ app.use(function(req,res,next){
 
 
 //clears the database    
-//seedDB();
+seedDB();
 
 app.use(authenticationRoutes);
 app.use(parkingRoutes);
