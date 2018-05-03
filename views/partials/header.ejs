@@ -9,32 +9,7 @@
 
     </head>
     <body>
-        <!--<nav class="navbar navbar-default">-->
-        <!--    <div class="container-fluid">-->
-        <!--        <div class="navbar-header">-->
-        <!--            <a class="navbar-brand" href="/">YelpCamp</a>-->
-        <!--        </div>-->
-                
-        <!--         <ul class="nav navbar-nav navbar-right">-->
-        <!--                <li><a href="/">Login</a></li>-->
-        <!--                <li><a href="/">Sign Up</a></li>-->
-        <!--                <li><a href="/">Log out</a></li>-->
-        <!--         </ul>-->
-               
-                
-                
-                
-                
-        <!--        <div class="collapse navbar-collapse">-->
-        <!--            <ul class="nav navbar-nav navbar-right">-->
-        <!--                <li><a href="/">Login</a></li>-->
-        <!--                <li><a href="/">Sign Up</a></li>-->
-        <!--                <li><a href="/">Log out</a></li>-->
-        <!--            </ul>-->
-        <!--        </div>-->
-        <!--    </div>-->
-        <!--</nav>-->
-         <div class="ui fixed inverted menu">
+       <div class="ui fixed inverted menu">
             <div class="ui container">
                 <div class="header item">
                     <a href="/">Parking Spot</a>
@@ -46,7 +21,7 @@
                         <a href="/login" class="item">Login</a>
                         <a href="/register" class="item">Sign Up</a>
                     <% }else{ %>
-                        <span class="item">Signed In as <%=currentUser.username.charAt(0).toUpperCase()+currentUser.username.substring(1,currentUser.username.length)%></span>
+                        <span class="item"><i class="user icon"></i><%=currentUser.username.charAt(0).toUpperCase()+currentUser.username.substring(1,currentUser.username.length)%></span>
                         <a href="/logout" class="item">Log out</a>    
                    <% } %>
                     

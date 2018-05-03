@@ -1,16 +1,29 @@
 <% include ./partials/header%>
-
 <div class="container">
-    <div class="login">
-         <h1>LOGIN PAGE</h1>
-    
-        <form action="/login" method="POST">
-        <input name="username" placeholder="username" type="text"></input>
-        <input name="password" placeholder="password" type="password"></input>
-        <button>Login</button>
-        </form>    
+    <div class="newCampground">
+        <div class="row">
+            <div style="width:30%;margin:75px auto;">
+                <div class="container">
+                    <div class="login">
+                         <h1>LOGIN FORM</h1>
+                    
+                        <form action="/login" method="POST">
+                             <div class="form-group">
+                                 <input class="form-control" name="username" placeholder="username" type="text"></input>
+                             </div>
+                             <div class="form-group">
+                                 <input class="form-control" name="password" placeholder="password" type="password"></input>        
+                             </div>
+                             <div class="form-group">
+                                <button class="btn btn-lg  btn-block btn-primary">LOGIN</button>
+                             </div>
+                        </form>    
+                    </div>
+                    
+                </div>
+            </div>
+        </div>    
     </div>
-    
 </div>
-    
+
 <% include ./partials/footer%>

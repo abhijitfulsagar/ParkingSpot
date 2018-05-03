@@ -7,6 +7,8 @@ var campSchema=new mongoose.Schema({
     image2:String,
     image3:String,
     location:String,
+    createdAt:{type:Date,default:Date.now},
+    availability:[],
     lat:Number,
     lng:Number,
     description:String,

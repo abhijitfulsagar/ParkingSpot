@@ -24,6 +24,8 @@ app.use(require("express-session")({
     resave:false,
     saveUninitialized:false
 }));
+app.locals.moment = require("moment");
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new passportLocal(User.authenticate()));
@@ -47,7 +49,7 @@ app.use(function(req,res,next){
 
 
 //clears the database    
-seedDB();
+//seedDB();
 
 app.use(authenticationRoutes);
 app.use(parkingRoutes);
