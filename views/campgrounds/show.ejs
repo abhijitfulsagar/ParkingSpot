@@ -4,26 +4,32 @@
             <div class="col-md-3">
                 <p class="lead"><%= parking.author.username.charAt(0).toUpperCase()+parking.author.username.substring(1,parking.author.username.length) %>'s Parking Spot</p>
                 <div class="list-group">
-                    <li class="list-group-item active">Availability</strong>
-                        <ul>
-                           <% parking.availability.forEach(function(day){ %>
-                               <% if(day.inlineCheckbox1!=null) { %> <li><%=day.inlineCheckbox1%></li> <% } %>
-                               <% if(day.inlineCheckbox2!=null) { %> <li><%=day.inlineCheckbox2%></li> <% } %>
-                               <% if(day.inlineCheckbox3!=null) { %> <li><%=day.inlineCheckbox3%></li> <% } %>
-                               <% if(day.inlineCheckbox4!=null) { %> <li><%=day.inlineCheckbox4%></li> <% } %>
-                               <% if(day.inlineCheckbox5!=null) { %> <li><%=day.inlineCheckbox5%></li> <% } %>
-                               <% if(day.inlineCheckbox6!=null) { %> <li><%=day.inlineCheckbox6%></li> <% } %>
-                               <% if(day.inlineCheckbox7!=null) { %> <li><%=day.inlineCheckbox7%></li> <% } %>
-                            <% });%>
-                            
-                        </ul>
+                    <li class="list-group-item" id="info1"><strong>Availability</strong>
+                        <div id="panel1">
+                            <ul>
+                               <% parking.availability.forEach(function(day){ %>
+                                   <% if(day.inlineCheckbox1!=null) { %> <li><%=day.inlineCheckbox1%></li> <% } %>
+                                   <% if(day.inlineCheckbox2!=null) { %> <li><%=day.inlineCheckbox2%></li> <% } %>
+                                   <% if(day.inlineCheckbox3!=null) { %> <li><%=day.inlineCheckbox3%></li> <% } %>
+                                   <% if(day.inlineCheckbox4!=null) { %> <li><%=day.inlineCheckbox4%></li> <% } %>
+                                   <% if(day.inlineCheckbox5!=null) { %> <li><%=day.inlineCheckbox5%></li> <% } %>
+                                   <% if(day.inlineCheckbox6!=null) { %> <li><%=day.inlineCheckbox6%></li> <% } %>
+                                   <% if(day.inlineCheckbox7!=null) { %> <li><%=day.inlineCheckbox7%></li> <% } %>
+                                <% });%>
+                                
+                            </ul>
+                            <p><%= parking.startTime%> to <%= parking.endTime%></p>
+                        </div>
                     </li>
                     
-                    <li class="list-group-item"><strong>Booked dates</strong></li>
-                    <li class="list-group-item"><strong>Current availability.
-                    </strong></li>
-                    <li class="list-group-item"><strong>Map</strong>
-                        <p><div id="map"></div></p>
+                    <li class="list-group-item" id="info2"><strong>Booked dates</strong>
+                        <div id="panel2">hello</div>
+                    </li>
+                    <li class="list-group-item" id="info3"><strong>Current availability</strong>
+                        <div id="panel3">Abhijit</div>
+                    </li>
+                    <li class="list-group-item" id="info4"><strong>Map</strong>
+                        <div id="panel4"><div id="map"></div></div>
                     </li>
                 </div>
                
@@ -148,5 +154,7 @@
   }
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWSsO3N7NxFgtDVbX0NQdf1NUzvDTUoyc&callback=initMap"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <% include ../partials/footer %>

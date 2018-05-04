@@ -31,7 +31,16 @@
 #myCarousel{
     max-width: 100%;
     max-height: 100%;
-     background-position: center;
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+#panel1, #info1, #panel2, #info2, #panel3, #info3, #panel4, #info4 {
+    background-color: #e5eecc;
+    /*border: solid 1px #c3c3c3;*/
+}
+
+#panel1, #panel2, #panel3, #panel4 {
+    padding: 10px;
+    display: none;
 }
