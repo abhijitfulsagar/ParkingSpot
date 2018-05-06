@@ -23,7 +23,7 @@
                     </li>
                     
                     <li class="list-group-item" id="info2"><strong>Booked dates</strong>
-                        <div id="panel2">hello</div>
+                        
                     </li>
                     <li class="list-group-item" id="info3"><strong>Current availability</strong>
                         <div id="panel3">Abhijit</div>
@@ -82,9 +82,9 @@
                         <h4 class="text-left">
                             <strong><em>Submitted  by <%= parking.author.username.charAt(0).toUpperCase()+parking.author.username.substring(1,parking.author.username.length) %></em></strong>
                            <p><em><%= moment(parking.createdAt).fromNow() %></em></p>
+                           <a class="ui inverted green button" href="/index/<%= parking._id%>/book">Book</a>
                         </h4>
                          
-                                 
                             
                         <h4><a href="/index"><%= parking.name%></a></h4>
                          <p><%=parking.description%></p>

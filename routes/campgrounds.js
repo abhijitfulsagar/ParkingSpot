@@ -1,5 +1,6 @@
 var express=require("express");
 var Parking=require("../models/campgrounds");
+var Book=require("../models/book");
 var middleware=require("../middleware/middleware");
 var router=express.Router();
 
@@ -30,7 +31,7 @@ router.get("/index",function(req, res) {
     });
 });
 
-//CREATE - add new campground to DB
+//CREATE - add new PARKING to DB
 router.post("/index", middleware.isLoggedIn, function(req, res){
   // get data from form and add to campgrounds array
   var name = req.body.placeName;
@@ -84,7 +85,7 @@ router.get("/index/:id",function(req, res) {
    
 });
 
-//EDIT CAMPGROUND
+//EDIT PARKING
 router.get("/index/:id/edit",middleware.checkUserOwnership,function(req, res) {
    
         Parking.findById(req.params.id,function(err,foundParkingSpot){
@@ -92,7 +93,7 @@ router.get("/index/:id/edit",middleware.checkUserOwnership,function(req, res) {
         });    
 });
 
-// UPDATE CAMPGROUND ROUTE
+// UPDATE PARKING ROUTE
 router.put("/index/:id", middleware.checkUserOwnership, function(req, res){
   geocoder.geocode(req.body.data.location, function (err, data) {
     if (err || !data.length) {
@@ -126,6 +127,39 @@ router.delete("/index/:id",middleware.checkUserOwnership,function(req,res){
             res.redirect("/index");
         }
     });
+});
+
+//BOOK PARKING
+router.get("/index/:id/book",middleware.isLoggedIn,function(req, res) {
+   
+        Parking.findById(req.params.id,function(err,foundParkingSpot){
+            res.render("campgrounds/book",{parking:foundParkingSpot});
+        });    
+});
+
+router.post("/index/:id/book",middleware.isLoggedIn,function(req, res){
+    Parking.findById(req.params.id,function(err, foundParkingSpot) {
+        if(err){
+            res.redirect("/index/"+req.params.id);
+        }else{
+            console.log("The type is:"+typeof(req.body.data.bookdate));
+            Book.create(req.body.data,function(err,dateBooked){
+                if(err){
+                    req.flash("error","Error in booking for that date");
+                    res.redirect("/index/"+foundParkingSpot._id);
+                }else{
+                    dateBooked.renterInfo.id=req.user._id;
+                    dateBooked.renterInfo.username=req.user.username;
+                    dateBooked.save();
+                    foundParkingSpot.booked.push(dateBooked);
+                    foundParkingSpot.save();   
+                    req.flash("success","Successfully booked "+foundParkingSpot.name+" on "+dateBooked.bookdate);
+                    res.redirect("/index/"+foundParkingSpot._id);
+                }
+            });
+        }
+    });
+   
 });
 
 module.exports=router;

@@ -26,6 +26,12 @@ var campSchema=new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:"Comment"   //this is the name of model
         }
+    ],
+    booked:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Bookdates"
+        } 
     ]
 });
 
